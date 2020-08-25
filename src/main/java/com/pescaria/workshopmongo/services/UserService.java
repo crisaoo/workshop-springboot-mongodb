@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pescaria.workshopmongo.domain.User;
+import com.pescaria.workshopmongo.dto.UserDTO;
 import com.pescaria.workshopmongo.repositories.UserRepository;
 import com.pescaria.workshopmongo.services.exceptions.ObjectNotFoundException;
 
@@ -20,5 +21,16 @@ public class UserService {
 	
 	public User findById(String id) {
 		return repository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found."));
+	}
+	
+	public User insert(User obj) {
+		return repository.insert(obj);
+	}
+	
+	public User fromDTO(UserDTO dto) {
+		String id = dto.getId();
+		String name = dto.getName(); 
+		String email = dto.getEmail();
+		return new User(id, name, email);
 	}
 }
