@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.pescaria.workshopmongo.domain.Post;
 import com.pescaria.workshopmongo.domain.User;
-import com.pescaria.workshopmongo.dto.AuthorDTO;
 import com.pescaria.workshopmongo.repositories.PostRepository;
-import com.pescaria.workshopmongo.repositories.UserRepository;
 import com.pescaria.workshopmongo.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -18,8 +16,6 @@ public class PostService {
 	private PostRepository repository;
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private UserRepository userRepo;
 	
 	public List<Post> findAll(){
 		return repository.findAll();
@@ -30,14 +26,9 @@ public class PostService {
 	}
 	
 	public Post insert(Post obj) {
-		User author = userService.findById(obj.getAuthor().getId());
-		obj.setAuthor(new AuthorDTO(author));
-		
-		//Adicionando o post à coleção do user
+		User author = userService.setAuthorForPost(obj);
 		Post insObj = repository.save(obj);
-		author.getPosts().add(insObj);
-		userRepo.save(author);
-		
+		userService.addPostForPostsCollection(insObj, author);		
 		return insObj;
 	}
 	
