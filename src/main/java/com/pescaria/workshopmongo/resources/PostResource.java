@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.pescaria.workshopmongo.domain.Post;
 import com.pescaria.workshopmongo.dto.CommentDTO;
+import com.pescaria.workshopmongo.resources.util.URL;
 import com.pescaria.workshopmongo.services.PostService;
 
 @RestController
@@ -55,6 +57,13 @@ public class PostResource {
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	@GetMapping(value = "/titlesearch")
+	public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text){
+		text = URL.decodeParam(text);
+		List<Post> list = service.findByTItle(text);
+		return ResponseEntity.ok().body(list);
 	}
 	
 	// Comments
