@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.pescaria.workshopmongo.domain.Post;
+import com.pescaria.workshopmongo.dto.CommentDTO;
 import com.pescaria.workshopmongo.services.PostService;
 
 @RestController
@@ -54,5 +55,13 @@ public class PostResource {
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	// Comments
+	
+	@GetMapping(value = "/{id}/comments")
+	public ResponseEntity<List<CommentDTO>> findAllComments(@PathVariable String id){
+		List<CommentDTO> list = service.findAllComments(id);
+		return ResponseEntity.ok().body(list);
 	}
 }

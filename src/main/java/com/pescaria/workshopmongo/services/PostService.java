@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.pescaria.workshopmongo.domain.Post;
 import com.pescaria.workshopmongo.domain.User;
+import com.pescaria.workshopmongo.dto.CommentDTO;
 import com.pescaria.workshopmongo.repositories.PostRepository;
 import com.pescaria.workshopmongo.services.exceptions.ObjectNotFoundException;
 
@@ -52,5 +53,12 @@ public class PostService {
 			upObj.setTitle(title);
 		if (body != null)
 			upObj.setBody(body);
+	}
+	
+	// Comments
+	
+	public List<CommentDTO> findAllComments(String id){
+		Post obj = findById(id);
+		return obj.getComments();
 	}
 }
